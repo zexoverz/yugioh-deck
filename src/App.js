@@ -21,13 +21,9 @@ const App = () =>  {
   
 
   const handleChange = (event) => {
-    setSearch(event.target.value)
+  setSearch(event.target.value)
+  
   }
-
-
-  // useEffect(async () => {
-   
-  // }, ["search"])
   
   
  const fetchYugi = async (e, searchYugi) => {
