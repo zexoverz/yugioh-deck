@@ -8,6 +8,8 @@ import axios from "axios";
 import CardYugi from "./cardYugi";
 import Swal from "sweetalert2";
 import logo2 from "../logo2.png";
+import firebase from "firebase/app";
+import "firebase/firestore";
 
 
 
@@ -59,6 +61,22 @@ const Home = () => {
       Swal.close();
    }
 
+   const addEvent = async (card) => {
+    Swal.fire({
+        title: 'Loading...'
+      });
+      Swal.showLoading();
+    const addSuccess = await firebase
+       .firestore()
+       .collection("Deck")
+       .doc(card.id)
+       .set(card)
+    
+    Swal.close();
+    Swal.fire("Good job!", "Add Card Success", "success");
+
+   }
+
     return (
         <div className="container text-center text-white">
        
@@ -72,7 +90,7 @@ const Home = () => {
           <Link to="/MyDeck" className="btn btn-warning ml-4"> MyDeck </Link>
         </form>
         
-        <CardYugi yugioh={yugioh} ></CardYugi>
+        <CardYugi yugioh={yugioh} addEvent={addEvent} ></CardYugi>
         
         
       </div>
