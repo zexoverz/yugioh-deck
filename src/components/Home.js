@@ -17,6 +17,7 @@ const Home = () => {
 
     const [yugioh, setYugi] = useState([]);
     const [search, setSearch] = useState("");
+
     
     const fetchYugi = async () => {
         Swal.fire({

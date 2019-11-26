@@ -4,6 +4,7 @@ import React, {
 
 import Home from "./components/Home";
 import MyDeck from "./components/MyDeck";
+import Detail from "./components/DetailCard";
 import {
   BrowserRouter as Router,
   Route,
@@ -18,8 +19,8 @@ export default class App extends Component {
     return (
     <Router >
       <Route exact path="/" component={Home}></Route>
+      <Route exact path="/Detail/:name" component={Detail}></Route>
       <Route exact path="/MyDeck" component={MyDeck}></Route>
-
     </Router>
     )
   }
