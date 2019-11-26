@@ -6,6 +6,11 @@ import { Button } from 'react-bootstrap';
 
 
 const Deck = (props) => {
+
+    const handleDelete = (card) => {
+        props.handleDelete(card);
+    }
+
     return (
         <div className="row mt-5">
         {
@@ -13,7 +18,7 @@ const Deck = (props) => {
             <Card style={{ width: '18rem' }} className="col-3 bg-dark" key={card.id}>
             <Card.Img variant="top" src={card.card_images[0].image_url} />
             <Card.Body>
-            <Button variant="danger">Delete</Button>
+            <Button variant="danger" onClick={() => handleDelete(card)} >Delete</Button>
             </Card.Body>
             </Card>
             )

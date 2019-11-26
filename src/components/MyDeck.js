@@ -40,12 +40,21 @@ const MyDeck = () => {
             setDeckCards(myDeckCards);
             Swal.close();
           });
-        
-        
+    }
+
+    const handleDelete =  (card) => {
+      firebase
+          .firestore()
+          .collection("Deck")
+          .doc(card.id)
+          .delete()
+        .then( () => {
+          return fetchDeck()
+        })
     }
 
     useEffect(() => {
-        fetchDeck();
+      fetchDeck();
     }, [])
 
 
@@ -53,7 +62,7 @@ const MyDeck = () => {
         <div className="container text-center text-white">
             <h1 className="text-white mt-5">My Deck </h1>
             <Link to="/" className="btn btn-warning ml-2 mt-4"> Back to home </Link>
-            <Deck deckCards={deckCards}></Deck>
+            <Deck deckCards={deckCards} handleDelete={handleDelete}></Deck>
         </div>
     );
 };
