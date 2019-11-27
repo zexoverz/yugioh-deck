@@ -15,6 +15,7 @@ const MyDeck = () => {
     const dispatch = useDispatch();
     const deckCards = useSelector(state => state.deckCards);
 
+
     const fetchDeck = () => {
         Swal.fire({
             title: 'Loading...'
@@ -57,7 +58,9 @@ const MyDeck = () => {
     }
 
     useEffect(() => {
-      fetchDeck();
+      if (deckCards.length < 1){
+        fetchDeck();
+      }
     }, [])
 
 

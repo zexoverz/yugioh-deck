@@ -11,38 +11,33 @@ import logo2 from "../logo2.png";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import {connect} from "react-redux";
+import {fetchYugi, findCard} from "../actions/index";
 
 
 const Home = (props) => {
 
-    
-    const fetchYugi = async () => {
+    const {yugioh,search} = props;
+    const fetchCards = async () => {
         Swal.fire({
             title: 'Loading...'
           });
           Swal.showLoading();
-          const response = await axios({
-            method: "GET",
-            url: "https://db.ygoprodeck.com/api/v5/cardinfo.php"
-          })
-          let cards = response.data.slice(700,752)
-          props.dispatch({
-            type: "SET_YUGI",
-            cards: cards
-          })
-          Swal.close();
+        let success = await props.dispatch(fetchYugi());
+        Swal.close();
     }
 
     useEffect( () => {
-        fetchYugi();
+      if(yugioh.length < 1) {
+        fetchCards();
+      }
     }, [])
   
   
     const handleChange = (event) => {
-    props.dispatch({
-      type: "SET_SEARCH",
-      filtered: event.target.value
-    })
+      props.dispatch({
+        type: "SET_SEARCH",
+        filtered: event.target.value
+      })
     }
     
     
@@ -53,18 +48,7 @@ const Home = (props) => {
         title: 'Loading...'
       });
       Swal.showLoading();
-      const response = await axios({
-        method: "GET",
-        url: "https://db.ygoprodeck.com/api/v5/cardinfo.php"
-      })
-      let cards = response.data
-      let filtered = cards.filter(card => {
-      return card.name.toLowerCase().includes(searchYugi.toLowerCase())
-      })
-      props.dispatch({
-        type: "SET_YUGI",
-        cards: filtered
-      })
+      let success = await props.dispatch(findCard(searchYugi))
       Swal.close();
    }
 
@@ -84,7 +68,7 @@ const Home = (props) => {
 
    }
 
-   const {yugioh,search} = props
+   
 
     return (
         <div className="container text-center text-white">

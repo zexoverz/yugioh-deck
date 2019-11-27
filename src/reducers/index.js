@@ -1,4 +1,4 @@
-import {SET_YUGI, SET_SEARCH, SET_CARD, SET_IMG_URL, SET_DECK_CARDS} from "../actions/index";
+import {SET_YUGI, SET_SEARCH, SET_CARD, SET_IMG_URL, SET_DECK_CARDS} from "./constant";
 
 const initialState = {
     yugioh: [],
@@ -39,5 +39,7 @@ function reducer(state = initialState, action) {
             return state;
     }
 }
+
+
 
 export default reducer;

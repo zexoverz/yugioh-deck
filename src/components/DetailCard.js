@@ -3,6 +3,7 @@ import {useSelector, useDispatch} from "react-redux";
 import axios from "axios";
 import Swal from "sweetalert2";
 import "./detailCard.css"
+import {fetchDetail} from "../actions/index";
 
 import {useParams, Link} from "react-router-dom";
 
@@ -20,21 +21,9 @@ const DetailCard = () => {
         Swal.fire({
             title: 'Loading...'
           });
-          Swal.showLoading();
-          const response = await axios({
-            method: "GET",
-            url: `https://db.ygoprodeck.com/api/v5/cardinfo.php?name=${name}`
-          })
-          let cardTemp = response.data[0]
-          dispatch({
-              type: "SET_CARD",
-              card: cardTemp
-          })
-          dispatch({
-              type: "SET_IMG_URL",
-              url: cardTemp.card_images[0].image_url
-          })
-          Swal.close();
+        Swal.showLoading();
+        let success = await dispatch(fetchDetail(name))
+        Swal.close();
     }
 
     useEffect(() => {
