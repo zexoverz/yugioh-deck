@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react'
+import React, { useEffect} from 'react'
+import {useSelector, useDispatch} from "react-redux";
 import axios from "axios";
 import Swal from "sweetalert2";
 import "./detailCard.css"
@@ -7,8 +8,11 @@ import {useParams, Link} from "react-router-dom";
 
 const DetailCard = () => {
 
-    const [card, setCard] = useState({});
-    const [imgUrl, setImgUrl] = useState("");
+   
+    const dispatch = useDispatch();
+
+    const card = useSelector(state => state.card);
+    const imgUrl = useSelector(state => state.imgUrl);
 
     const {name} = useParams();
 
@@ -22,9 +26,14 @@ const DetailCard = () => {
             url: `https://db.ygoprodeck.com/api/v5/cardinfo.php?name=${name}`
           })
           let cardTemp = response.data[0]
-          console.log(cardTemp.card_images[0].image_url)
-          setCard(cardTemp)
-          setImgUrl(cardTemp.card_images[0].image_url)
+          dispatch({
+              type: "SET_CARD",
+              card: cardTemp
+          })
+          dispatch({
+              type: "SET_IMG_URL",
+              url: cardTemp.card_images[0].image_url
+          })
           Swal.close();
     }
 
@@ -41,15 +50,12 @@ const DetailCard = () => {
              <div id="detailCard" className="bg-dark container mt-4 d-flex justify-content-between">
                 <img src={imgUrl} className="mx-5" id="imgDetail" ></img>
                 <div className="detail mt-5  text-left">
-                    {/* <p>Name     : Invoked Mechaba </p> */}
                     <p>Type     : {card.type} </p>
                     <p>Level    : {card.level} </p>
                     <p>Race     : {card.race} </p>
                     <p>Attribute: {card.attribute} </p>
                     <p>Archetype: {card.archetype} </p>
                     <p>Desc     : {card.desc} </p>
-                    
-
                 </div>
              </div>
         </div>

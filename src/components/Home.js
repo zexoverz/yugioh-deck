@@ -1,5 +1,5 @@
 import React, {
-    Component,useState,useEffect
+  useEffect
 } from 'react';
 
 import {useHistory, Link} from "react-router-dom";
@@ -10,13 +10,10 @@ import Swal from "sweetalert2";
 import logo2 from "../logo2.png";
 import firebase from "firebase/app";
 import "firebase/firestore";
+import {connect} from "react-redux";
 
 
-
-const Home = () => {
-
-    const [yugioh, setYugi] = useState([]);
-    const [search, setSearch] = useState("");
+const Home = (props) => {
 
     
     const fetchYugi = async () => {
@@ -28,8 +25,11 @@ const Home = () => {
             method: "GET",
             url: "https://db.ygoprodeck.com/api/v5/cardinfo.php"
           })
-          let cards = response.data
-          setYugi(cards.slice(500,552))
+          let cards = response.data.slice(700,752)
+          props.dispatch({
+            type: "SET_YUGI",
+            cards: cards
+          })
           Swal.close();
     }
 
@@ -39,7 +39,10 @@ const Home = () => {
   
   
     const handleChange = (event) => {
-    setSearch(event.target.value)
+    props.dispatch({
+      type: "SET_SEARCH",
+      filtered: event.target.value
+    })
     }
     
     
@@ -58,7 +61,10 @@ const Home = () => {
       let filtered = cards.filter(card => {
       return card.name.toLowerCase().includes(searchYugi.toLowerCase())
       })
-      setYugi(filtered)
+      props.dispatch({
+        type: "SET_YUGI",
+        cards: filtered
+      })
       Swal.close();
    }
 
@@ -77,6 +83,8 @@ const Home = () => {
     Swal.fire("Good job!", "Add Card Success", "success");
 
    }
+
+   const {yugioh,search} = props
 
     return (
         <div className="container text-center text-white">
@@ -97,9 +105,17 @@ const Home = () => {
       </div>
     );
 };
+
+
+const mapStateToProps = (state) => {
+  return {
+    yugioh: state.yugioh,
+    search: state.search
+  };
+}
  
 
 
 
 
-export default Home;
+export default connect(mapStateToProps)(Home);

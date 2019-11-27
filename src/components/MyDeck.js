@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useEffect} from 'react';
 
 import {Link} from "react-router-dom";
 
@@ -7,13 +7,13 @@ import "firebase/firestore";
 import Swal from "sweetalert2";
 import Deck from "./Deck";
 
-
+import {useSelector, useDispatch} from "react-redux";
 
 
 const MyDeck = () => {
 
-    const [deckCards, setDeckCards] = useState([]);
-
+    const dispatch = useDispatch();
+    const deckCards = useSelector(state => state.deckCards);
 
     const fetchDeck = () => {
         Swal.fire({
@@ -37,7 +37,10 @@ const MyDeck = () => {
 
                 myDeckCards.push(card);
               })
-            setDeckCards(myDeckCards);
+            dispatch({
+              type: "SET_DECK_CARDS",
+              deck: myDeckCards
+            })
             Swal.close();
           });
     }
