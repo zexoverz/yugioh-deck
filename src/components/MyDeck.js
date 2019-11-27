@@ -42,6 +42,7 @@ const MyDeck = () => {
               type: "SET_DECK_CARDS",
               deck: myDeckCards
             })
+            myDeckCards = []
             Swal.close();
           });
     }
@@ -53,7 +54,7 @@ const MyDeck = () => {
           .doc(card.id)
           .delete()
         .then( () => {
-          return fetchDeck()
+          return fetchDeck()  
         })
     }
 
