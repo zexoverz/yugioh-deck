@@ -11,10 +11,11 @@ import {useSelector, useDispatch} from "react-redux";
 
 
 const MyDeck = () => {
-
+    
     const dispatch = useDispatch();
     const deckCards = useSelector(state => state.deckCards);
 
+    
 
     const fetchDeck = () => {
         Swal.fire({
@@ -22,6 +23,7 @@ const MyDeck = () => {
           });
           Swal.showLoading();
         let myDeckCards = [];
+        let deckTxt = "";
         firebase
           .firestore()
           .collection("Deck")
@@ -37,6 +39,7 @@ const MyDeck = () => {
                 card.desc = doc.data().desc;
 
                 myDeckCards.push(card);
+                deckTxt += "- " + card.name + "\n"
               })
             dispatch({
               type: "SET_DECK_CARDS",
@@ -44,7 +47,11 @@ const MyDeck = () => {
             })
             myDeckCards = []
             Swal.close();
-          });
+
+            console.log(deckTxt)
+
+
+          })
     }
 
     const handleDelete =  (card) => {
@@ -65,10 +72,17 @@ const MyDeck = () => {
     }, [])
 
 
+
+  
+
+   
+
+
     return (
         <div className="container text-center text-white">
             <h1 className="text-white mt-5">My Deck </h1>
             <Link to="/" className="btn btn-warning ml-2 mt-4"> Back to home </Link>
+            <a href="https://duelingnexus.com/login" className="btn btn-primary mt-4 ml-5">Play Yugioh Nexus Game </a>
             <Deck deckCards={deckCards} handleDelete={handleDelete}></Deck>
         </div>
     );
