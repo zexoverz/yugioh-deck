@@ -8,14 +8,15 @@ import axios from "axios";
 import CardYugi from "./cardYugi";
 import Swal from "sweetalert2";
 import logo2 from "../logo2.png";
-import firebase from "firebase/app";
-import "firebase/firestore";
-import {connect} from "react-redux";
+// import firebase from "firebase/app";
+// import "firebase/firestore";
+import {connect, useSelector, useDispatch} from "react-redux";
 import {fetchYugi, findCard} from "../actions/index";
 
 
 const Home = (props) => {
 
+    const dispatch = useDispatch();
     const {yugioh,search} = props;
     const fetchCards = async () => {
         Swal.fire({
@@ -25,6 +26,7 @@ const Home = (props) => {
         let success = await props.dispatch(fetchYugi());
         Swal.close();
     }
+    let myDeckCards = useSelector(state => state.deckCards);
 
     useEffect( () => {
       if(yugioh.length < 1) {
@@ -53,16 +55,18 @@ const Home = (props) => {
    }
 
    const addEvent = async (card) => {
-    Swal.fire({
-        title: 'Loading...'
-      });
-      Swal.showLoading();
-    const addSuccess = await firebase
-       .firestore()
-       .collection("Deck")
-       .doc(card.id)
-       .set(card)
-    
+    Swal.fire({title: 'Loading...'});
+    Swal.showLoading();
+
+    console.log(myDeckCards)
+
+    myDeckCards.push(card)
+
+    dispatch({
+      type: "SET_DECK_CARDS",
+      deck: myDeckCards
+    })
+
     Swal.close();
     Swal.fire("Good job!", "Add Card Success", "success");
 
@@ -94,7 +98,7 @@ const Home = (props) => {
 const mapStateToProps = (state) => {
   return {
     yugioh: state.yugioh,
-    search: state.search
+    search: state.search,
   };
 }
  
